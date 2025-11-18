@@ -29,9 +29,6 @@ public class Workout {
 
     public Workout() {}
 
-    // =======================
-    // Getters and setters
-    // =======================
 
     public String getId() {
         return id;
