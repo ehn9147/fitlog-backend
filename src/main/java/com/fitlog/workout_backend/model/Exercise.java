@@ -3,64 +3,39 @@ package com.fitlog.workout_backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "exercises")
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
-
     private Integer sets;
     private Integer reps;
     private Double weight;
 
-    private String notes;
+    @ManyToOne
+    @JoinColumn(name = "workout_id")
+    private Workout workout;
 
     public Exercise() {}
 
-    // ===== Getters & Setters =====
+    // getters + setters
+    public Long getId() { return id; }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) { this.id = id; }
-
-    public String getName() {
-        return name;
-    }
-
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public Integer getSets() {
-        return sets;
-    }
+    public Integer getSets() { return sets; }
+    public void setSets(Integer sets) { this.sets = sets; }
 
-    public void setSets(Integer sets) {
-        this.sets = sets;
-    }
+    public Integer getReps() { return reps; }
+    public void setReps(Integer reps) { this.reps = reps; }
 
-    public Integer getReps() {
-        return reps;
-    }
+    public Double getWeight() { return weight; }
+    public void setWeight(Double weight) { this.weight = weight; }
 
-    public void setReps(Integer reps) {
-        this.reps = reps;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) { this.notes = notes; }
+    public Workout getWorkout() { return workout; }
+    public void setWorkout(Workout workout) { this.workout = workout; }
 }
-

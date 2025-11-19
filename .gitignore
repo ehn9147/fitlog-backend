@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Maven / Java
+target/
+*.log
+
+# SQLite
+fitlog.db
+
+# IntelliJ
+.idea/
+*.iml
