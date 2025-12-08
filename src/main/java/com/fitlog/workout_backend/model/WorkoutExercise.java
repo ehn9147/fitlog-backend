@@ -1,36 +1,35 @@
 package com.fitlog.workout_backend.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "exercise")
-public class Exercise {
+@Table(name = "workout_exercise")
+public class WorkoutExercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+
+    @Column(name = "workout_id")
+    private Long workoutId;
+
+    @Column(name = "exercise_id")
+    private Long exerciseId;
 
     private Integer sets;
     private Integer reps;
     private Double weight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workout_id")
-    @JsonBackReference
-    private Workout workout;
+    public WorkoutExercise() {}
 
-    public Exercise() {}
-
-    // getters + setters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Long getWorkoutId() { return workoutId; }
+    public void setWorkoutId(Long workoutId) { this.workoutId = workoutId; }
+
+    public Long getExerciseId() { return exerciseId; }
+    public void setExerciseId(Long exerciseId) { this.exerciseId = exerciseId; }
 
     public Integer getSets() { return sets; }
     public void setSets(Integer sets) { this.sets = sets; }
@@ -40,7 +39,5 @@ public class Exercise {
 
     public Double getWeight() { return weight; }
     public void setWeight(Double weight) { this.weight = weight; }
-
-    public Workout getWorkout() { return workout; }
-    public void setWorkout(Workout workout) { this.workout = workout; }
 }
+

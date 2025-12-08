@@ -1,30 +1,39 @@
 package com.fitlog.workout_backend.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "workouts")
 public class Workout {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Column(name = "user_id")
+    private String userId;
 
     private String name;
-    private String type;   // Strength / Cardio / Flexibility
-    private String date;   // ISO string
+    private String type;
+    private String date;
     private Integer duration;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Exercise> exercises = new ArrayList<>();
 
     public Workout() {}
 
-    // getters + setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

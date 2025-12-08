@@ -20,13 +20,20 @@ public class WorkoutController {
         this.workoutRepository = workoutRepository;
     }
 
-    // GET /api/workouts or /api/workouts?userId=...
+    // GET /api/workouts
     @GetMapping
     public ResponseEntity<List<Workout>> getAllWorkouts(
             @RequestParam(value = "userId", required = false) String userId
     ) {
-        // For now we ignore userId unless you add a userId field to Workout.
-        List<Workout> workouts = workoutRepository.findAll();
+        List<Workout> workouts;
+
+        if (userId != null && !userId.isBlank()) {
+            // 👇 now actually filter by userId
+            workouts = workoutRepository.findByUserId(userId);
+        } else {
+            workouts = workoutRepository.findAll();
+        }
+
         return ResponseEntity.ok(workouts);
     }
 
@@ -39,11 +46,14 @@ public class WorkoutController {
     }
 
     // POST /api/workouts
-    // Your frontend sends NewWorkoutPayload (Workout without id)
     @PostMapping
     public ResponseEntity<Workout> createWorkout(@RequestBody Workout payload) {
-        // Ensure a new Workout entity is created (ignore any incoming id)
+
         Workout workout = new Workout();
+
+
+        workout.setUserId(payload.getUserId());
+
         workout.setName(payload.getName());
         workout.setType(payload.getType());
         workout.setDate(payload.getDate());
@@ -57,7 +67,7 @@ public class WorkoutController {
                 ex.setSets(exPayload.getSets());
                 ex.setReps(exPayload.getReps());
                 ex.setWeight(exPayload.getWeight());
-                ex.setWorkout(workout);
+                ex.setWorkout(workout);       // 👈 link child to parent
                 workout.getExercises().add(ex);
             }
         }
@@ -66,8 +76,6 @@ public class WorkoutController {
         return ResponseEntity.ok(saved);
     }
 
-    // PUT /api/workouts/{id}
-    // Your frontend sends NewWorkoutPayload body, id in path
     @PutMapping("/{id}")
     public ResponseEntity<Workout> updateWorkout(
             @PathVariable String id,
@@ -81,6 +89,7 @@ public class WorkoutController {
         Workout existing = workoutOpt.get();
 
         // Update basic fields
+        existing.setUserId(payload.getUserId()); // optional: or keep existing.getUserId()
         existing.setName(payload.getName());
         existing.setType(payload.getType());
         existing.setDate(payload.getDate());
